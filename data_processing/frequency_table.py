@@ -9,7 +9,7 @@ class FrequencyTable(object):
 	def __init__(self):
 		self.map = {}
 		
-	def add_word(self, word, frequency):
+	def add_word(self, word, frequency=1):
 		word_len = len(word)
 		mapping = (word, frequency)
 		if word_len in self.map.keys():
@@ -19,13 +19,17 @@ class FrequencyTable(object):
 			self.map[word_len][word] = frequency
 		
 	def get_frequency(self, word):
-		word_len = len(word)
-		if word_len in self.map.keys():
-			eligible = self.map[word_len]
-			if word in eligible.keys():
-				return eligible[word]
-		else:
-			return 0
+		try:
+			word_len = len(word)
+			if word_len in self.map.keys():
+				eligible = self.map[word_len]
+				if word in eligible.keys():
+					return eligible[word]
+			else:
+				return 0
+		except Exception as e:
+			print("Key error")
+			return 0 
 
 	def import_words(self, filename):
 		try:
@@ -41,6 +45,7 @@ class FrequencyTable(object):
 			return True
 		except Exception as e:
 			print("Problem reading file", e)
+			return False
 
 	def words_by_length(self, length):
 		if length in self.map.keys():
