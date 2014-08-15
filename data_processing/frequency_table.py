@@ -5,41 +5,45 @@ Inputs:
 List of words and their associated frequencies
 """
 
-class frequency_table(object):
+class FrequencyTable(object):
 	def __init__(self):
 		self.map = {}
-		self.map_keys = []
-
-
+		
 	def add_word(self, word, frequency):
 		word_len = len(word)
 		mapping = (word, frequency)
-		if word_len in self.map_keys:
-			self.map[word_len].append(mapping)
+		if word_len in self.map.keys():
+			self.map[word_len][word] = frequency
 		else:
-			self.map_keys.append(word_len)
-			self.map[word_len] = []
-			self.map[word_len].append(mapping)
-		#print self.map
-
+			self.map[word_len] = {}
+			self.map[word_len][word] = frequency
+		
 	def get_frequency(self, word):
 		word_len = len(word)
-		if word_len in self.map_keys:
-			for word_map in self.map[word_len]:
-				if word == word_map[0]:
-					return word_map[1]
+		if word_len in self.map.keys():
+			eligible = self.map[word_len]
+			if word in eligible.keys():
+				return eligible[word]
 		else:
 			return 0
 
 	def import_words(self, filename):
-		file_object = open(filename, 'rb')
-		line = file_object.readline()
-		while line:
-			info = line.split(',')
-			word = info[0]
-			frequency = info[1]
-			self.add_word(word, frequency)
+		try:
+			file_object = open(filename, 'rb')
 			line = file_object.readline()
-		file_object.close()
-				#frequency = info[1]
-				#print word, frequency
+			while line:
+				info = line.split(',')
+				word = info[0]
+				frequency = info[1]
+				self.add_word(word, frequency)
+				line = file_object.readline()
+			file_object.close()
+			return True
+		except Exception as e:
+			print("Problem reading file", e)
+
+	def words_by_length(self, length):
+		if length in self.map.keys():
+			return self.map[length]
+		else:
+			return {}
