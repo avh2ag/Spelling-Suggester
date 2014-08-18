@@ -40,7 +40,7 @@ class FrequencyTable(object):
 				word = info[0]
 				frequency = info[1]
 				self.add_word(word, frequency)
-				line = file_object.readline()
+				line = file_object.readline().strip()
 			file_object.close()
 			return True
 		except Exception as e:
