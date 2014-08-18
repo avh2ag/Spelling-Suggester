@@ -46,3 +46,4 @@ def test_words_by_length():
 	assert table.words_by_length(1) == {'a' : 1, 'b' : 1}
 	assert table.words_by_length(2) == {'ab' : 1}
 	assert table.words_by_length(3) == {}
+	
